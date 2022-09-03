@@ -18,6 +18,8 @@ public class StaffProfile {
     private Integer id;
     @Column(name= "NAME")
     private String name;
+    @Column(name= "PASSWORD")
+    private String password;
     @Column(name= "UUID")
     private String uuid;
     @Column(name= "REGISTRATION_DATE")

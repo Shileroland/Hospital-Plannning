@@ -21,5 +21,7 @@ public interface StaffRepository extends JpaRepository<StaffProfile,Integer> {
     @Query(value = "INSERT INTO STAFF(NAME,UUID,REGISTRATION_DATE)"
     		+ "VALUES (?,?,?,?);", nativeQuery = true)
     public abstract StaffProfile addStaff(String name,String uuid,String registrationDate) throws SQLException;
+    
+    public abstract StaffProfile findByName(String name) throws SQLException;
 
 }
