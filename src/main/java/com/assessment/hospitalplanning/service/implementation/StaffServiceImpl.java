@@ -30,13 +30,18 @@ public class StaffServiceImpl implements StaffService {
 
 	public ResponseEntity<?> staff(StaffDTO staffDTO) {
 		try {
+			//check that no two user has same UUID
+			//Its all Ready Set to be Unique in the database
 			StaffProfile staffProfile = new StaffProfile();
+			String uuid = generateType1UUID().toString();
+			Integer staffExists =  staffRepository.findByUuid(uuid).getId();
+			if (staffExists != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse<Object>(
+						ResponseConstants.ALREADY_EXIST_CODE, ResponseConstants.ALREADY_EXIST_MESSAGE, null));
+			}
 			staffProfile.setName(staffDTO.getName());
 			staffProfile.setRegistrationDate(registrationDate());
-			staffProfile.setUuid(generateType1UUID().toString());
-			String registrationDate = registrationDate();
-			String uuid = generateType1UUID().toString();
-			System.out.println(uuid);
+			staffProfile.setUuid(uuid);
 			StaffProfile entity = staffRepository.save(staffProfile);
 			if (entity.getId() != null) {
 				return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse<Object>(

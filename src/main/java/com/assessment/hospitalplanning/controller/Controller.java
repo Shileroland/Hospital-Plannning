@@ -63,8 +63,7 @@ public class Controller {
 		}
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
-		return ResponseEntity.ok(new AuthenticationResponse(jwt,"Roland"));
-
+		return ResponseEntity.ok(new AuthenticationResponse(jwt,userDetails.getUsername()));
 	}
 
 	//add a new staff member to the service
