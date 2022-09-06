@@ -22,15 +22,16 @@ public class MyUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
 			StaffProfile staffProfile = staffRepository.findByName(username);
-			return new User(staffProfile.getName(),staffProfile.getPassword(),new ArrayList<>());
+			if (staffProfile.getId() != null) {
+				System.out.println("Received:::"+ username+ "FETCHED--->"+staffProfile.getName());
+				return new User(staffProfile.getName(),staffProfile.getPassword(),new ArrayList<>());	
+			}
+		
 		} catch (SQLException e) {
 			System.out.println("An Error Occurred");
 			e.printStackTrace();
 		}
-		
-		
-		
-		return new User("roland","roland",new ArrayList<>());
+		return new User(null,null,new ArrayList<>());
 	}
 
 }

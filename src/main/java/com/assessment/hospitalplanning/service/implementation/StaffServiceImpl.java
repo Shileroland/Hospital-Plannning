@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.assessment.hospitalplanning.dto.StaffDTO;
@@ -29,6 +30,7 @@ public class StaffServiceImpl implements StaffService {
 	}
 
 	public ResponseEntity<?> staff(StaffDTO staffDTO) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		try {
 			//check that no two user has same UUID
 			//Its all Ready Set to be Unique in the database
@@ -42,6 +44,8 @@ public class StaffServiceImpl implements StaffService {
 			staffProfile.setName(staffDTO.getName());
 			staffProfile.setRegistrationDate(registrationDate());
 			staffProfile.setUuid(uuid);
+			String hashedPassword = passwordEncoder.encode(staffDTO.getPassword());
+			staffProfile.setPassword(hashedPassword);
 			StaffProfile entity = staffRepository.save(staffProfile);
 			if (entity.getId() != null) {
 				return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse<Object>(
